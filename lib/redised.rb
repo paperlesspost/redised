@@ -14,6 +14,22 @@ module Redised
     @_redis_connections[params] ||= Redis.new(params)
   end
 
+  # Disconnect all the redis connections
+  def self.redis_disconnect
+    @_redis_connections.collect do |params, redis|
+      redis.client.disconnect
+      [params, redis.client.connected?]
+    end
+  end
+
+  # (Re)Connect all the redis connections
+  def self.redis_connect
+    @_redis_connections.collect do |params, redis|
+      redis.client.connect
+      [params, redis.client.connected?]
+    end
+  end
+
   # Load/parse the YAML config setup at `redised_config_path`.
   # If no config is setup, returns nil
   #
