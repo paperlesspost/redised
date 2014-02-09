@@ -57,6 +57,19 @@ class TestRedised < Test::Unit::TestCase
       assert_equal 2, redis.client.db
       assert_equal 'mypass', redis.client.password
       assert_equal 'namespace', redis.namespace
+      assert_equal 5.0, redis.client.timeout
+    end
+
+    should "use redis_options" do
+      Redised.redis_options = {:timeout => 1.0}
+      RedisedClass.redis = 'localhost:5678:2:mypass/namespace'
+      redis = RedisedClass.redis
+      assert_equal 'localhost', redis.client.host
+      assert_equal 5678, redis.client.port
+      assert_equal 2, redis.client.db
+      assert_equal 'mypass', redis.client.password
+      assert_equal 'namespace', redis.namespace
+      assert_equal 1.0, redis.client.timeout
     end
 
   end

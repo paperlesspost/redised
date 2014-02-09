@@ -1,8 +1,10 @@
 require 'redis/namespace'
+require 'yaml'
+
 # Redised allows for the common patter of module access to redis, when included
 # a .redis and .redis= method are provided
 module Redised
-  VERSION = '0.3.0'
+  VERSION = '0.3.1'
 
   # Get a reusable connection based on a set of params. The
   # params are the same as the options you pass to `Redis.new`
@@ -65,8 +67,19 @@ module Redised
     @_redised_config = nil
   end
 
-  def self.included(klass)
+  # Set global redis options
+  #
+  #     Redised.redis_options = {:timeout => 1.0}
+  #
+  def self.redis_options=(options)
+    @_redised_redis_options = options || {}
+  end
 
+  def self.redis_options
+    @_redised_redis_options || {}
+  end
+
+  def self.included(klass)
     klass.module_eval do
 
       # Accepts:
@@ -85,13 +98,13 @@ module Redised
           else
             server, namespace = server.split('/', 2)
             host, port, db, password = server.split(':')
-            conn = ::Redised.redis_connection({
+            conn = ::Redised.redis_connection(Redised.redis_options.merge({
                 :host => host,
                 :port => port,
                 :thread_safe => true,
                 :db => db,
                 :password => password
-            })
+            }))
           end
 
           @_redis = namespace ? Redis::Namespace.new(namespace, :redis => conn) : conn
