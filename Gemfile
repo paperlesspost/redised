@@ -12,4 +12,5 @@ group :development do
   gem "minitest"
   gem "bundler", "~> 1.0"
   gem "jeweler"
+  gem 'test-unit'
 end

@@ -1,3 +1,4 @@
 ---
 mynamespace:
   production: localhost:6739/mynamespace
+  fromenv: <%= ENV['REDIS_CONNSTRING'] %>

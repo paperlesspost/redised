@@ -1,10 +1,11 @@
 require 'redis/namespace'
 require 'yaml'
+require 'erb'
 
 # Redised allows for the common patter of module access to redis, when included
 # a .redis and .redis= method are provided
 module Redised
-  VERSION = '0.3.2'
+  VERSION = '0.3.3'
 
   # Get a reusable connection based on a set of params. The
   # params are the same as the options you pass to `Redis.new`
@@ -43,7 +44,7 @@ module Redised
   #
   def self.redised_config
     if @_redised_config_path
-      @_redised_config ||= YAML.load_file(@_redised_config_path)
+      @_redised_config ||= YAML.load(::ERB.new(File.read(@_redised_config_path)).result)
     end
   end
 
@@ -130,7 +131,7 @@ module Redised
           self.redis = if redised_namespace
             ::Redised.redised_config[redised_namespace][::Redised.redised_env]
           else
-            ::Redised.redised_config[::Redis.redised_env]
+            ::Redised.redised_config[::Redised.redised_env]
           end
         else
           self.redis = 'localhost:6379'

@@ -72,6 +72,25 @@ class TestRedised < Test::Unit::TestCase
       assert_equal 1.0, redis.client.timeout
     end
 
+    context 'use ENV string for URL' do
+      setup do
+        RedisedClass.redis = nil
+        @env_config_path = File.join(File.dirname(__FILE__), 'env_redised_config.yml')
+      end
+
+      should 'process ERB in config YAML file' do
+        ENV['REDIS_CONNSTRING'] = '127.0.0.1:5678:2:mypassw/namespace'
+        Redised.redised_config_path = @env_config_path
+        Redised.redised_env = 'fromenv'
+        redis = RedisedClass.redis
+        assert_equal '127.0.0.1', redis.client.host
+        assert_equal 5678, redis.client.port
+        assert_equal 2, redis.client.db
+        assert_equal 'mypassw', redis.client.password
+        assert_equal 'namespace', redis.namespace
+
+      end
+    end
   end
 
 end
