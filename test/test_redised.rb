@@ -43,33 +43,33 @@ class TestRedised < Test::Unit::TestCase
     should "parse redis connection with namespace" do
       RedisedClass.redis = 'localhost:5678:0/namespace'
       redis = RedisedClass.redis
-      assert_equal 'localhost', redis.client.host
-      assert_equal 5678, redis.client.port
-      assert_equal 0, redis.client.db
+      assert_equal 'localhost', redis._client.host
+      assert_equal 5678, redis._client.port
+      assert_equal 0, redis._client.db
       assert_equal 'namespace', redis.namespace
     end
 
     should "parse redis connection with database and password" do
       RedisedClass.redis = 'localhost:5678:2:mypass/namespace'
       redis = RedisedClass.redis
-      assert_equal 'localhost', redis.client.host
-      assert_equal 5678, redis.client.port
-      assert_equal 2, redis.client.db
-      assert_equal 'mypass', redis.client.password
+      assert_equal 'localhost', redis._client.host
+      assert_equal 5678, redis._client.port
+      assert_equal 2, redis._client.db
+      assert_equal 'mypass', redis._client.password
       assert_equal 'namespace', redis.namespace
-      assert_equal 5.0, redis.client.timeout
+      assert_equal 5.0, redis._client.timeout
     end
 
     should "use redis_options" do
       Redised.redis_options = {:timeout => 1.0}
       RedisedClass.redis = 'localhost:5678:2:mypass/namespace'
       redis = RedisedClass.redis
-      assert_equal 'localhost', redis.client.host
-      assert_equal 5678, redis.client.port
-      assert_equal 2, redis.client.db
-      assert_equal 'mypass', redis.client.password
+      assert_equal 'localhost', redis._client.host
+      assert_equal 5678, redis._client.port
+      assert_equal 2, redis._client.db
+      assert_equal 'mypass', redis._client.password
       assert_equal 'namespace', redis.namespace
-      assert_equal 1.0, redis.client.timeout
+      assert_equal 1.0, redis._client.timeout
     end
 
     context 'use ENV string for URL' do
@@ -83,10 +83,10 @@ class TestRedised < Test::Unit::TestCase
         Redised.redised_config_path = @env_config_path
         Redised.redised_env = 'fromenv'
         redis = RedisedClass.redis
-        assert_equal '127.0.0.1', redis.client.host
-        assert_equal 5678, redis.client.port
-        assert_equal 2, redis.client.db
-        assert_equal 'mypassw', redis.client.password
+        assert_equal '127.0.0.1', redis._client.host
+        assert_equal 5678, redis._client.port
+        assert_equal 2, redis._client.db
+        assert_equal 'mypassw', redis._client.password
         assert_equal 'namespace', redis.namespace
 
       end

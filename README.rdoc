@@ -55,7 +55,7 @@ Then in your class you tell it what namespace config this class points to:
 It will now automatically load the correct redis connection for your namespace/env:
 
     MyRedisClass.redis #=> #<Redis::Namespace ..>
-    MyRedisClass.redis.client.host #=> 'redis01'
+    MyRedisClass.redis._client.host #=> 'redis01'
     MyRedisClass.namespace #=> 'mynamespace'
 
 The implementation of the `self.redis` method is very close to the `Resque.redis` method and is
