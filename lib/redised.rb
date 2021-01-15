@@ -5,7 +5,7 @@ require 'erb'
 # Redised allows for the common patter of module access to redis, when included
 # a .redis and .redis= method are provided
 module Redised
-  VERSION = '0.4.0'
+  VERSION = '0.4.1'
 
   # Get a reusable connection based on a set of params. The
   # params are the same as the options you pass to `Redis.new`
@@ -20,16 +20,16 @@ module Redised
   # Disconnect all the redis connections
   def self.redis_disconnect
     @_redis_connections.collect do |params, redis|
-      redis.client.disconnect
-      [params, redis.client.connected?]
+      redis._client.disconnect
+      [params, redis._client.connected?]
     end
   end
 
   # (Re)Connect all the redis connections
   def self.redis_connect
     @_redis_connections.collect do |params, redis|
-      redis.client.connect
-      [params, redis.client.connected?]
+      redis._client.connect
+      [params, redis._client.connected?]
     end
   end
 
