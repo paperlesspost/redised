@@ -47,7 +47,7 @@ GEM
     psych (3.0.3)
     rack (2.0.6)
     rake (12.3.1)
-    rdoc (6.0.4)
+    rdoc (6.3.2)
     redis (4.2.5)
     redis-namespace (1.6.0)
       redis (>= 3.0.4)
